@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box, Typography } from '@mui/material';
 
-const Form = ({ onSubmit }) => {
+const Form = ({ onSubmit}) => {
   const [name, setName] = useState('');
   const [hours, setHours] = useState('');
   const [type, setType] = useState('');
