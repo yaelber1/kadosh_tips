@@ -12,7 +12,8 @@ const theme = createTheme();
 const NumberInputBox = () => {
   const [numberOfForms, setNumberOfForms] = useState('');
   const [inputError, setInputError] = useState('');
-  const [hoursValues, setHoursValues] = useState([]);
+  const [formDataArray, setFormDataArray] = useState([]);
+
 
   const handleInputChange = (event) => {
     const value = event.target.value;
@@ -24,40 +25,31 @@ const NumberInputBox = () => {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
   
-    // Collect "hours" and "type" values for each form
-    const newHoursValues = formsArray.map((_, index) => {
-      const formHours = parseFloat(event.target[`hours_${index}`]?.value || 0);
-      const formType = event.target[`type_${index}`]?.value || '';
-  
-      if (formType === 'bar_35') {
-        const result = calculateBar35Result(formHours);
-        console.log(`Bar_35 Result for Form ${index + 1}:`, result);
+  const handleFormSubmit = (formData, index) => {
+    setFormDataArray((prevData) => {
+      const newData = [...prevData];
+      newData[index] = formData;
+      return newData;
+    });
+  };
+
+  const calculateResults = () => {
+    // Logic to calculate results for forms with category 'bar_35'
+    formDataArray.forEach((formData, index) => {
+      if (formData?.category === 'bar_35') {
+        const result = 4.39 * parseFloat(formData.hours);
+        console.log("כסף לקלמר של" , formData.name + " : " + result);
         // You can display the name and result on the screen as needed
       }
-  
-      return { hours: formHours, type: formType };
     });
-  
-    setHoursValues(newHoursValues);
-    console.log('Form Data:', newHoursValues);
-  };
-  
-
-  const handleAppSubmit = () => {
-    // Logic for the entire app submission
-    console.log('All forms submitted with data:', hoursValues);
-
-    // Optionally, you can perform additional calculations or actions with the collected data
   };
 
   const formsArray = Array.from({ length: parseInt(numberOfForms, 10) >= 0 ? parseInt(numberOfForms, 10) : 0 });
 
   return (
     <ThemeProvider theme={theme}>
-      <form onSubmit={handleSubmit} style={{ width: '400px', margin: 'auto' }}>
+      <form style={{ width: '400px', margin: 'auto' }}>
         <div>
           <FormControl fullWidth style={{ marginBottom: '16px' }}>
             <TextField
@@ -78,7 +70,7 @@ const NumberInputBox = () => {
             <Typography variant="h" sx={{ color: 'black', fontFamily: 'Open Sans, sans-serif', fontSize: '16px', fontWeight: 'bold' }}>
               עובד מספר {index + 1}
             </Typography>
-            <Form onSubmit={(data) => console.log(`Form ${index + 1} submitted with data:`, data)} index={index} />
+            <Form onSubmit={(data) => handleFormSubmit(data, index)} />
           </div>
         ))}
 
@@ -90,7 +82,7 @@ const NumberInputBox = () => {
         </div>
 
         <div>
-          <Button variant="outlined" onClick={handleAppSubmit}>
+          <Button type="button" variant="outlined" onClick={calculateResults}>
             שלח
           </Button>
         </div>

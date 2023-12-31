@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box } from '@mui/material';
 
-const Form = ({ onSubmit, index }) => {
+const Form = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [hours, setHours] = useState('');
   const [type, setType] = useState('');
@@ -17,17 +17,17 @@ const Form = ({ onSubmit, index }) => {
       hours,
       category: type,
     };
-    onSubmit(formData, index);
+    onSubmit(formData);
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '16px' }}>
+    <Box style={{ display: 'grid', gap: '16px' }}>
       <div>
         <TextField
           style={{ width: '120px', marginBottom: '16px' }}
           label="שם עובד/ת"
-          id={`name_${index}`}
-          name={`name_${index}`}
+          id="name"
+          name="name"
           variant="outlined"
           fullWidth
           value={name}
@@ -38,8 +38,8 @@ const Form = ({ onSubmit, index }) => {
         <TextField
           style={{ width: '160px', marginBottom: '16px' }}
           label="מספר שעות עובד/ת"
-          id={`hours_${index}`}
-          name={`hours_${index}`}
+          id="hours"
+          name="hours"
           variant="outlined"
           fullWidth
           value={hours}
@@ -48,10 +48,10 @@ const Form = ({ onSubmit, index }) => {
       </div>
       <div>
         <FormControl fullWidth style={{ width: '120px', marginBottom: '16px' }}>
-          <InputLabel id={`type_${index}`}>סוג עובד/ת</InputLabel>
+          <InputLabel id="type">סוג עובד/ת</InputLabel>
           <Select
-            labelId={`type_${index}`}
-            id={`type_${index}`}
+            labelId="type"
+            id="type"
             value={type}
             label="סוג עובד/ת"
             onChange={handleChange}
@@ -64,7 +64,10 @@ const Form = ({ onSubmit, index }) => {
           </Select>
         </FormControl>
       </div>
-    </form>
+      <Button variant="outlined" type="submit" onClick={handleSubmit}>
+        שלח
+      </Button>
+    </Box>
   );
 };
 
