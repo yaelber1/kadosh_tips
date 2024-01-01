@@ -5,9 +5,21 @@ const Form = ({ onSubmit}) => {
   const [name, setName] = useState('');
   const [hours, setHours] = useState('');
   const [type, setType] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChange = (event) => {
+  const handleChangeSelect = (event) => {
     setType(event.target.value);
+    setIsSubmitted(false);
+  };
+
+  const handleChangeName = (event) => {
+    setName(event.target.value);
+    setIsSubmitted(false);
+  };
+
+  const handleChangeHours = (event) => {
+    setHours(event.target.value);
+    setIsSubmitted(false);
   };
 
   const handleSubmit = (event) => {
@@ -17,6 +29,7 @@ const Form = ({ onSubmit}) => {
       hours,
       category: type,
     };
+    setIsSubmitted(true);
     onSubmit(formData);
   };
 
@@ -24,37 +37,37 @@ const Form = ({ onSubmit}) => {
     <Box style={{ display: 'grid', gap: '16px' }}>
       <div>
         <TextField
-          style={{ width: '120px', marginBottom: '16px' }}
+          style={{ width: '180px', marginBottom: '16px' }}
           label="שם עובד/ת"
           id="name"
           name="name"
           variant="outlined"
           fullWidth
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleChangeName}
         />
       </div>
       <div>
         <TextField
-          style={{ width: '160px', marginBottom: '16px' }}
+          style={{ width: '180px', marginBottom: '16px' }}
           label="מספר שעות עובד/ת"
           id="hours"
           name="hours"
           variant="outlined"
           fullWidth
           value={hours}
-          onChange={(e) => setHours(e.target.value)}
+          onChange={handleChangeHours}
         />
       </div>
       <div>
-        <FormControl fullWidth style={{ width: '120px', marginBottom: '16px' }}>
+        <FormControl fullWidth style={{ width: '180px', marginBottom: '16px' }}>
           <InputLabel id="type">סוג עובד/ת</InputLabel>
           <Select
             labelId="type"
             id="type"
             value={type}
             label="סוג עובד/ת"
-            onChange={handleChange}
+            onChange={handleChangeSelect}
           >
             <MenuItem value="bar_35">ברמנ/ית על 35</MenuItem>
             <MenuItem value="bar_tips">ברמנ/ית על טיפים</MenuItem>
@@ -64,7 +77,7 @@ const Form = ({ onSubmit}) => {
           </Select>
         </FormControl>
       </div>
-      <Button variant="outlined" type="submit" onClick={handleSubmit}>
+      <Button variant="outlined" type="submit" onClick={handleSubmit} disabled={isSubmitted}>
         שלח
       </Button>
     </Box>

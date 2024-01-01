@@ -4,6 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Form from './Form';
 
@@ -17,17 +18,12 @@ const NumberInputBox = () => {
   const [submittedData, setSubmittedData] = useState([]);
   const [formSubmissionStatus, setFormSubmissionStatus] = useState([]);
   const [total35Waiters, setTotal35Waiters] = useState(0);
-  // const [totalBarBase, setTotalBarBase] = useState(0);
-  // const [totalInchargeBase, setTotalInchargeBase] = useState(0);
-  // const [totalWaiterTips, setTotalWaiterTips] = useState(0);
   const [showExtraContent, setShowExtraContent] = useState(false);
   const [error, setError] = useState(null);
   const [barHours, setBarHours] = useState(0);
   const [inchargeHours, setInchargeHours] = useState(0);
   const [waitersHours, setWaitersHours] = useState(0);
-
-  
-
+  const [results, setResults] = useState([]);
 
 
   const handleInputChange = (event) => {
@@ -52,31 +48,30 @@ const NumberInputBox = () => {
 
     setFormDataArray((prevData) => {
        // Filter out forms with category 'bar_35'
-    const newData = prevData.filter((data) => data?.category !== 'bar_35');
+    const newData = [...prevData];
+    newData[index] = formData;
     
     // Add the new form data if the category is not 'bar_35'
+    const hours = parseFloat(formData.hours);
     if (formData.category === 'bar_35') {
-      newData[index] = null;
-      setInitialMoney((prevTotal) => prevTotal - formData.hours * 4.39);
+      setInitialMoney((prevTotal) => prevTotal - (hours * 4.39));
     }
-    else{
-      if (formData.category === 'waiter_35'){
-        setTotal35Waiters((prevTotal) => prevTotal + formData.hours * 35);
-        setInitialMoney((prevTotal) => prevTotal - formData.hours * 35);
-        console.log(initialMoney);
-      }
-      if (formData.category === 'waiter_tips'){
-        setWaitersHours((prevTotal) => prevTotal + formData.hours);
+    if (formData.category === 'waiter_35'){
+      setTotal35Waiters((prevTotal) => prevTotal + (hours * 35));
+      setInitialMoney((prevTotal) => prevTotal - (hours * 35));
+    }
+    if (formData.category === 'waiter_tips'){
+      setWaitersHours((prevTotal) => prevTotal + hours);
 
-      }
-      if (formData.category === 'bar_tips'){
-        setBarHours((prevTotal) => prevTotal + formData.hours)
-      }
-      if (formData.category === 'incharge'){
-        setInchargeHours((prevTotal) => prevTotal + formData.hours)
-      }
-      newData[index] = formData;
     }
+    if (formData.category === 'bar_tips'){
+      setBarHours((prevTotal) => prevTotal + hours)
+    }
+    if (formData.category === 'incharge'){
+      setInchargeHours((prevTotal) => prevTotal + hours)
+    }
+    newData[index] = formData;
+    
     setFormSubmissionStatus((prevStatus) => {
       const newStatus = [...prevStatus];
       newStatus[index] = true;
@@ -87,12 +82,12 @@ const NumberInputBox = () => {
     });
   };
 
-  const handleSubmit = ()=>{
-    console.log(initialMoney);
+  const calculateResult = ()=>{
     const calculatedValue = initialMoney - (total35Waiters + waitersHours*36);
-    console.log(barHours);
-    console.log(waitersHours); 
-    console.log(inchargeHours);
+    const money = parseFloat(initialMoney);
+    const numerator = parseFloat(money + (barHours*30.61) + (inchargeHours*31));
+    const denominator = +barHours + +inchargeHours + +waitersHours;
+    const moneyForHour = (numerator / denominator).toFixed(2);
     if (calculatedValue < 0){
       setError('יש יותר הפרשה מכסף מזומן');
     }
@@ -100,6 +95,29 @@ const NumberInputBox = () => {
       setError(null);
       setShowExtraContent(true);
     }
+
+    const resultsArray = [];
+  
+    formDataArray.forEach((formData, index) => {
+      const hours = parseFloat(formData.hours);
+      if (formData?.category === 'bar_tips') {
+        // Calculate result for 'bar_tips'
+        const result = (moneyForHour - 30.61) * hours;
+        resultsArray.push({ index, category: 'bar_tips', result });
+      
+      } else if (formData?.category === 'waiter_tips') {
+        // Calculate result for 'waiter_tips'
+        const result = (moneyForHour - 36) * hours;
+        resultsArray.push({ index, category: 'waiter_tips', result });
+      
+      } else if (formData?.category === 'incharge') {
+        // Calculate result for 'incharge'
+        const result = (moneyForHour - 31) * hours;
+        resultsArray.push({ index, category: 'incharge', result });
+      }
+    });
+    setResults(resultsArray);
+    
   };
 
 
@@ -138,7 +156,9 @@ const NumberInputBox = () => {
             <Typography variant="h" sx={{ color: 'black', fontFamily: 'Open Sans, sans-serif', fontSize: '16px', fontWeight: 'bold' }}>
               עובד מספר {index + 1}
             </Typography>
+            <div>
             <Form onSubmit={(data) => handleFormSubmit(data, index)}/>
+            </div>
           </div>
         ))}
 
@@ -148,15 +168,13 @@ const NumberInputBox = () => {
             if (data.category === 'bar_35') {
               return (
                 <div key={index}>
-                  <Typography>{`שם: ${data.name}, שעות: ${data.hours}, סוג: ${data.category}`}</Typography>
-                  <Typography>{`תוצאה: ${(data.hours * 4.39).toFixed(2)}`}</Typography>
+                  <Typography>{`שם: ${data.name}, שעות: ${data.hours}, כסף לקלמר: ${(data.hours * 4.39).toFixed(2)}`}</Typography>
                 </div>
               );
             }
           return null; // Return null for other categories
           })}
           {/* Render the forms that are not yet submitted */}
-         
         </div>
 
         <div>
@@ -164,11 +182,17 @@ const NumberInputBox = () => {
             type="button" 
             variant="outlined"
             disabled={formSubmissionStatus.some((status) => !status)}
-            onClick={handleSubmit}
+            onClick={calculateResult}
             >
             שלח
           </Button>
         </div>
+
+        {formSubmissionStatus.some((status) => !status) && (
+          <div>
+            <Typography color="error">עליך למלא את כל פרטי העובדים לפני ההגשה של הטופס</Typography>
+          </div>
+        )}
 
         {/* Display error if there is one */}
         {error && (
@@ -180,10 +204,23 @@ const NumberInputBox = () => {
         {/* Display extra content when showExtraContent is true */}
         {showExtraContent && (
           <div>
-            <Typography>{`הפרשה: ${(total35Waiters + waitersHours*36).toFixed(2)}`}</Typography>
-            <Typography>{`כמה לשעה: ${((initialMoney + (barHours*30.61) + (inchargeHours*31))/ (barHours + inchargeHours + waitersHours)).toFixed(2)}`}</Typography>
+            <Box style={{ display: 'grid', gap: '16px' }}>
+              <Typography>{`הפרשה: ${(total35Waiters + waitersHours*36).toFixed(2)}`}</Typography>
+              <Typography>{`כמה לשעה: ${parseFloat((parseFloat(initialMoney) + (barHours*30.61) + (inchargeHours*31))/ (+barHours + +inchargeHours + +waitersHours)).toFixed(2)}`}</Typography>
+            </Box>
           </div>
         )}
+
+
+        {/* Display results */}
+        <div>
+          {results.map(({ index, result }) => (
+            <Typography key={index}>
+              {`כסף לקלמר של ${submittedData[index].data.name}: ${result.toFixed(2)}`}
+            </Typography>
+          ))}
+        </div>
+
       </form>
     </ThemeProvider>
   );
