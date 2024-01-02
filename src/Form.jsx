@@ -73,7 +73,7 @@ const Form = ({ onSubmit}) => {
             <MenuItem value="bar_tips">ברמנ/ית על טיפים</MenuItem>
             <MenuItem value="waiter_35">מלצר/ית על 35</MenuItem>
             <MenuItem value="waiter_tips">מלצר/ית על טיפים</MenuItem>
-            <MenuItem value="incharge">אחמ״ש</MenuItem>
+            <MenuItem value="incharge">אחמ״ש/ית</MenuItem>
           </Select>
         </FormControl>
       </div>
