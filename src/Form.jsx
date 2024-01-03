@@ -6,6 +6,9 @@ const Form = ({ onSubmit}) => {
   const [hours, setHours] = useState('');
   const [type, setType] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isHoursValid, setIsHoursValid] = useState('');
+  const [formError, setFormError] = useState('');
+  const [isButtonPushed, setButtonPushed] = useState('אל תשכח לשלוח את הטופס');
 
   const handleChangeSelect = (event) => {
     setType(event.target.value);
@@ -18,18 +21,33 @@ const Form = ({ onSubmit}) => {
   };
 
   const handleChangeHours = (event) => {
-    setHours(event.target.value);
-    setIsSubmitted(false);
+    const value = event.target.value;
+    if (value === '' || (parseInt(value, 10) >= 0 && !isNaN(value))) {
+      setIsHoursValid('');
+      setHours(value);
+      setIsSubmitted(false);
+    } else {
+      setIsHoursValid('מספר שעות חייב להיות גדול מ-0');
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Check if any field is empty
+    if (!name || !hours || !type) {
+      setFormError('יש למלא את כל השדות');
+      return;
+    }
+
     const formData = {
       name,
       hours,
       category: type,
     };
+    setButtonPushed('');
     setIsSubmitted(true);
+    setFormError(''); // Clear any previous form error
     onSubmit(formData);
   };
 
@@ -51,12 +69,15 @@ const Form = ({ onSubmit}) => {
         <TextField
           style={{ width: '180px', marginBottom: '16px' }}
           label="מספר שעות עובד/ת"
+          type="number"
           id="hours"
           name="hours"
           variant="outlined"
           fullWidth
           value={hours}
           onChange={handleChangeHours}
+          error={!!isHoursValid}
+          helperText={isHoursValid}
         />
       </div>
       <div>
@@ -80,6 +101,19 @@ const Form = ({ onSubmit}) => {
       <Button variant="outlined" type="submit" onClick={handleSubmit} disabled={isSubmitted}>
         שלח
       </Button>
+
+      {isButtonPushed && (
+        <Typography color="error" style={{ marginTop: '8px' }}>
+          {isButtonPushed}
+        </Typography>
+      )}
+
+      {/* Display form error message */}
+      {formError && (
+        <Typography color="error" style={{ marginTop: '8px' }}>
+          {formError}
+        </Typography>
+      )}
     </Box>
   );
 };

@@ -4,11 +4,21 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Form from './Form';
 
 const theme = createTheme();
+
+const containerStyle = {
+  width: '300px', 
+  height: '50px', 
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontFamily: 'Rubik, sans-serif',
+  fontSize: '16px', 
+  fontWeight: 'bold',
+};
 
 const NumberInputBox = () => {
   const [numberOfForms, setNumberOfForms] = useState('');
@@ -126,9 +136,9 @@ const NumberInputBox = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <form style={{ width: '400px', margin: 'auto' }}>
+      <form >
 
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: '16px'}}>
           <FormControl fullWidth>
             <InputLabel htmlFor="initialMoney">הזן סה״כ כסף מזומן</InputLabel>
             <TextField type="number" id="initialMoney" name="initialMoney" fullWidth onChange={handleInitialMoneyChange}/>
@@ -152,8 +162,8 @@ const NumberInputBox = () => {
 
 
         {formsArray.map((_, index) => (
-          <div key={index} style={{ marginBottom: '10px', backgroundColor: index % 2 === 0 ? '#BFACCF' : '#f0f0f0' }}>
-            <Typography variant="h" sx={{ color: 'black', fontFamily: 'Open Sans, sans-serif', fontSize: '16px', fontWeight: 'bold' }}>
+          <div key={index} style={{backgroundColor: index % 2 === 0 ? '#F5EDD9' : '#f0f0f0', marginBottom: '16px' }}>
+            <Typography variant="h" sx={{ color: 'black', fontFamily: 'Rubik, sans-serif', fontSize: '20px', fontWeight: 'bold'}}>
               עובד מספר {index + 1}
             </Typography>
             <div>
@@ -162,30 +172,31 @@ const NumberInputBox = () => {
           </div>
         ))}
 
+        <div style={{alignSelf: 'flex-start'}}>
+          <Button 
+            style={{alignSelf: 'flex-start', marginBottom: '16px'}}
+            type="button" 
+            variant="outlined"
+            disabled={formSubmissionStatus.some((status) => !status)}
+            onClick={calculateResult}
+            >
+            חשבו
+          </Button>
+        </div>
+
         <div>
           {/* Display submitted data and results to the user */}
           {submittedData.map(({ index, data }) => {
             if (data.category === 'bar_35') {
               return (
                 <div key={index}>
-                  <Typography>{`שם: ${data.name}, שעות: ${data.hours}, כסף לקלמר: ${(data.hours * 4.39).toFixed(2)}`}</Typography>
+                  <Typography sx={containerStyle}>{`שם: ${data.name}, שעות: ${data.hours}, כסף לקלמר: ${(data.hours * 4.39).toFixed(2)}`}</Typography>
                 </div>
               );
             }
           return null; // Return null for other categories
           })}
           {/* Render the forms that are not yet submitted */}
-        </div>
-
-        <div>
-          <Button 
-            type="button" 
-            variant="outlined"
-            disabled={formSubmissionStatus.some((status) => !status)}
-            onClick={calculateResult}
-            >
-            שלח
-          </Button>
         </div>
 
         {formSubmissionStatus.some((status) => !status) && (
@@ -205,8 +216,8 @@ const NumberInputBox = () => {
         {showExtraContent && (
           <div>
             <Box style={{ display: 'grid', gap: '16px' }}>
-              <Typography>{`הפרשה: ${(total35Waiters + waitersHours*36).toFixed(2)}`}</Typography>
-              <Typography>{`כמה לשעה: ${parseFloat((parseFloat(initialMoney) + (barHours*30.61) + (inchargeHours*31))/ (+barHours + +inchargeHours + +waitersHours)).toFixed(2)}`}</Typography>
+              <Typography sx={containerStyle}>{`הפרשה: ${(total35Waiters + waitersHours*36).toFixed(2)}`}</Typography>
+              <Typography sx={containerStyle}>{`כמה לשעה: ${parseFloat((parseFloat(initialMoney) + (barHours*30.61) + (inchargeHours*31))/ (+barHours + +inchargeHours + +waitersHours)).toFixed(2)}`}</Typography>
             </Box>
           </div>
         )}
@@ -214,11 +225,13 @@ const NumberInputBox = () => {
 
         {/* Display results */}
         <div>
+          <Container  maxWidth="sm">
           {results.map(({ index, result }) => (
-            <Typography key={index}>
+            <Typography sx={containerStyle} key={index}>
               {`כסף לקלמר של ${submittedData[index].data.name}: ${result.toFixed(2)}`}
             </Typography>
           ))}
+          </Container>
         </div>
 
       </form>
