@@ -8,7 +8,9 @@ import { Box, Container } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Form from './Form';
 
-const theme = createTheme();
+const theme = createTheme({
+  direction: "rtl", // Set the direction to right-to-left
+});
 
 const containerStyle = {
   width: '300px', 
@@ -138,10 +140,16 @@ const NumberInputBox = () => {
     <ThemeProvider theme={theme}>
       <form >
 
-      <div style={{ marginBottom: '16px'}}>
+      <div style={{ marginBottom: '16px'}} dir='rtl'>
           <FormControl fullWidth>
-            <InputLabel htmlFor="initialMoney">הזן סה״כ כסף מזומן</InputLabel>
-            <TextField type="number" id="initialMoney" name="initialMoney" fullWidth onChange={handleInitialMoneyChange}/>
+            {/* <InputLabel htmlFor="initialMoney">הזן סה״כ כסף מזומן</InputLabel> */}
+            <TextField type="number" 
+              id="initialMoney" 
+              name="initialMoney" 
+              label="הזן סה״כ כסף מזומן" 
+              fullWidth 
+              onChange={handleInitialMoneyChange}
+            />
           </FormControl>
         </div>
 
@@ -166,6 +174,7 @@ const NumberInputBox = () => {
             <Typography variant="h" sx={{ color: 'black', fontFamily: 'Rubik, sans-serif', fontSize: '20px', fontWeight: 'bold'}}>
               עובד מספר {index + 1}
             </Typography>
+            <div style={{marginBottom: '16px'}}></div>
             <div>
             <Form onSubmit={(data) => handleFormSubmit(data, index)}/>
             </div>
@@ -189,9 +198,11 @@ const NumberInputBox = () => {
           {submittedData.map(({ index, data }) => {
             if (data.category === 'bar_35') {
               return (
+                <Container maxWidth="sm" sx={{ bgcolor: "#F5EDD9" }}>
                 <div key={index}>
                   <Typography sx={containerStyle}>{`שם: ${data.name}, שעות: ${data.hours}, כסף לקלמר: ${(data.hours * 4.39).toFixed(2)}`}</Typography>
                 </div>
+                </Container>
               );
             }
           return null; // Return null for other categories
@@ -215,20 +226,22 @@ const NumberInputBox = () => {
         {/* Display extra content when showExtraContent is true */}
         {showExtraContent && (
           <div>
+             <Container maxWidth="sm" sx={{ bgcolor: "#F5EDD9" }}>
             <Box style={{ display: 'grid', gap: '16px' }}>
-              <Typography sx={containerStyle}>{`הפרשה: ${(total35Waiters + waitersHours*36).toFixed(2)}`}</Typography>
-              <Typography sx={containerStyle}>{`כמה לשעה: ${parseFloat((parseFloat(initialMoney) + (barHours*30.61) + (inchargeHours*31))/ (+barHours + +inchargeHours + +waitersHours)).toFixed(2)}`}</Typography>
+              <u><Typography sx={containerStyle}>{`הפרשה: ${(total35Waiters + waitersHours*36).toFixed(2)}`}</Typography></u>
+              <u><Typography sx={containerStyle}>{`כמה לשעה: ${parseFloat((parseFloat(initialMoney) + (barHours*30.61) + (inchargeHours*31))/ (+barHours + +inchargeHours + +waitersHours)).toFixed(2)}`}</Typography></u>
             </Box>
+            </Container>
           </div>
         )}
 
 
         {/* Display results */}
         <div>
-          <Container  maxWidth="sm">
+          <Container  maxWidth="sm" sx={{ bgcolor: "#F5EDD9" }}>
           {results.map(({ index, result }) => (
             <Typography sx={containerStyle} key={index}>
-              {`כסף לקלמר של ${submittedData[index].data.name}: ${result.toFixed(2)}`}
+              {`${submittedData[index].data.name}: ${result.toFixed(2)}`}
             </Typography>
           ))}
           </Container>
