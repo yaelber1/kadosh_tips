@@ -99,7 +99,7 @@ const Form = ({ onSubmit}) => {
         </FormControl>
       </div>
       <Button variant="outlined" type="submit" onClick={handleSubmit} disabled={isSubmitted}>
-        שלח
+        הבא
       </Button>
 
       {isButtonPushed && (
