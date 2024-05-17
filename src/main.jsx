@@ -6,15 +6,14 @@ import App from "./App";
 import { Container, Box } from "@mui/material";
 import backgroundImage from "./2.png";
 import secondBackgroundImage from "./rst-kadosh-1.png";
-import rtlPlugin from 'stylis-plugin-rtl';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { prefixer } from 'stylis';
-
+import rtlPlugin from "stylis-plugin-rtl";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import { prefixer } from "stylis";
 
 // Create rtl cache
 const cacheRtl = createCache({
-  key: 'muirtl',
+  key: "muirtl",
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
@@ -47,33 +46,33 @@ const theme = createTheme({
 
 root.render(
   <CacheProvider value={cacheRtl}>
-  <ThemeProvider theme={theme}>
-    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-    <CssBaseline />
-    <Container maxWidth="sm" sx={{ bgcolor: "#F5EDD9" }}>
-      <Box sx={containerStyle}></Box>
-    </Container>
-    <Container maxWidth="sm" sx={{ bgcolor: "#F5EDD9" }}>
-      <Box sx={secondContainerStyle}></Box>
-    </Container>
-    <Container maxWidth="sm">
-      <h2
-        style={{
-          width: "400px",
-          margin: "auto",
-          marginBottom: "16px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          fontFamily: "Rubik, sans-serif",
-          fontSize: "25px",
-          fontWeight: "bold",
-        }}
-      >
-        חישוב טיפים יומיים בקלות
-      </h2>
-      <App></App>
-    </Container>
-  </ThemeProvider>
+    <ThemeProvider theme={theme}>
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline />
+      <Container maxWidth="sm" sx={{ bgcolor: "#F5EDD9" }}>
+        <Box sx={containerStyle}></Box>
+      </Container>
+      <Container maxWidth="sm" sx={{ bgcolor: "#F5EDD9" }}>
+        <Box sx={secondContainerStyle}></Box>
+      </Container>
+      <Container maxWidth="sm">
+        <h2
+          style={{
+            width: "400px",
+            margin: "auto",
+            marginBottom: "16px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            fontFamily: "Rubik, sans-serif",
+            fontSize: "25px",
+            fontWeight: "bold",
+          }}
+        >
+          חישוב טיפים יומיים בקלות
+        </h2>
+        <App></App>
+      </Container>
+    </ThemeProvider>
   </CacheProvider>
 );
