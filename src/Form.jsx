@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box, Typography } from '@mui/material';
+import React, { useState } from "react";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+  Box,
+  Typography,
+} from "@mui/material";
 
-const Form = ({ onSubmit}) => {
-  const [name, setName] = useState('');
-  const [hours, setHours] = useState('');
-  const [type, setType] = useState('');
+/**
+ * Form component handles the input for individual employees.
+ */
+const Form = ({ onSubmit }) => {
+  const [name, setName] = useState("");
+  const [hours, setHours] = useState("");
+  const [type, setType] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isHoursValid, setIsHoursValid] = useState('');
-  const [formError, setFormError] = useState('');
-  const [isButtonPushed, setButtonPushed] = useState('אל תשכח לשלוח את הטופס');
+  const [isHoursValid, setIsHoursValid] = useState("");
+  const [formError, setFormError] = useState("");
+  const [isButtonPushed, setButtonPushed] = useState("אל תשכח לשלוח את הטופס");
 
   const handleChangeSelect = (event) => {
     setType(event.target.value);
@@ -22,12 +34,12 @@ const Form = ({ onSubmit}) => {
 
   const handleChangeHours = (event) => {
     const value = event.target.value;
-    if (value === '' || (parseInt(value, 10) >= 0 && !isNaN(value))) {
-      setIsHoursValid('');
+    if (value === "" || (parseInt(value, 10) >= 0 && !isNaN(value))) {
+      setIsHoursValid("");
       setHours(value);
       setIsSubmitted(false);
     } else {
-      setIsHoursValid('מספר שעות חייב להיות גדול מ-0');
+      setIsHoursValid("מספר שעות חייב להיות גדול מ-0");
     }
   };
 
@@ -36,7 +48,7 @@ const Form = ({ onSubmit}) => {
 
     // Check if any field is empty
     if (!name || !hours || !type) {
-      setFormError('יש למלא את כל השדות');
+      setFormError("יש למלא את כל השדות");
       return;
     }
 
@@ -45,17 +57,17 @@ const Form = ({ onSubmit}) => {
       hours,
       category: type,
     };
-    setButtonPushed('');
+    setButtonPushed("");
     setIsSubmitted(true);
-    setFormError(''); // Clear any previous form error
+    setFormError(""); // Clear any previous form error
     onSubmit(formData);
   };
 
   return (
-    <Box style={{ display: 'grid', gap: '16px' }}>
+    <Box style={{ display: "grid", gap: "16px" }}>
       <div>
         <TextField
-          style={{ width: '180px', marginBottom: '16px' }}
+          style={{ width: "180px", marginBottom: "16px" }}
           label="שם עובד/ת"
           id="name"
           name="name"
@@ -67,7 +79,7 @@ const Form = ({ onSubmit}) => {
       </div>
       <div>
         <TextField
-          style={{ width: '180px', marginBottom: '16px' }}
+          style={{ width: "180px", marginBottom: "16px" }}
           label="מספר שעות עובד/ת"
           type="number"
           id="hours"
@@ -81,7 +93,7 @@ const Form = ({ onSubmit}) => {
         />
       </div>
       <div>
-        <FormControl fullWidth style={{ width: '180px', marginBottom: '16px' }}>
+        <FormControl fullWidth style={{ width: "180px", marginBottom: "16px" }}>
           <InputLabel id="type">סוג עובד/ת</InputLabel>
           <Select
             labelId="type"
@@ -98,19 +110,24 @@ const Form = ({ onSubmit}) => {
           </Select>
         </FormControl>
       </div>
-      <Button variant="outlined" type="submit" onClick={handleSubmit} disabled={isSubmitted}>
+      <Button
+        variant="outlined"
+        type="submit"
+        onClick={handleSubmit}
+        disabled={isSubmitted}
+      >
         הבא
       </Button>
 
       {isButtonPushed && (
-        <Typography color="error" style={{ marginTop: '8px' }}>
+        <Typography color="error" style={{ marginTop: "8px" }}>
           {isButtonPushed}
         </Typography>
       )}
 
       {/* Display form error message */}
       {formError && (
-        <Typography color="error" style={{ marginTop: '8px' }}>
+        <Typography color="error" style={{ marginTop: "8px" }}>
           {formError}
         </Typography>
       )}

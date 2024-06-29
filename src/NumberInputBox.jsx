@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -22,6 +21,9 @@ const containerStyle = {
   fontWeight: "bold",
 };
 
+/**
+ * NumberInputBox component handles the number of forms input and the initial money input.
+ */
 const NumberInputBox = () => {
   const [numberOfForms, setNumberOfForms] = useState("");
   const [initialMoney, setInitialMoney] = useState(0);
@@ -137,7 +139,6 @@ const NumberInputBox = () => {
       <form>
         <div style={{ marginBottom: "16px" }} dir="rtl">
           <FormControl fullWidth>
-            {/* <InputLabel htmlFor="initialMoney">הזן סה״כ כסף מזומן</InputLabel> */}
             <TextField
               type="number"
               id="initialMoney"
@@ -250,12 +251,18 @@ const NumberInputBox = () => {
                   ).toFixed(2)}`}</Typography>
                 </u>
                 <u>
-                  <Typography sx={containerStyle}>{`כמה לשעה: ${parseFloat(
-                    (parseFloat(initialMoney) +
-                      barHours * 32.31 +
-                      inchargeHours * 31) /
-                      (+barHours + +inchargeHours + +waitersHours)
-                  ).toFixed(2)}`}</Typography>
+                  {barHours + inchargeHours + waitersHours === 0 ? (
+                    <Typography sx={containerStyle}>
+                      אין עובדים על טיפים
+                    </Typography>
+                  ) : (
+                    <Typography sx={containerStyle}>{`כמה לשעה: ${parseFloat(
+                      (parseFloat(initialMoney) +
+                        barHours * 32.31 +
+                        inchargeHours * 31) /
+                        (+barHours + +inchargeHours + +waitersHours)
+                    ).toFixed(2)}`}</Typography>
+                  )}
                 </u>
               </Box>
             </Container>
