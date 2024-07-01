@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Box, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Form from "./Form";
+import EmployeeForm from "./EmployeeForm";
 
 const theme = createTheme({
   direction: "rtl", // Set the direction to right-to-left
@@ -22,9 +22,9 @@ const containerStyle = {
 };
 
 /**
- * NumberInputBox component handles the number of forms input and the initial money input.
+ * ShiftDetailsForm component handles the number of forms input and the initial money input.
  */
-const NumberInputBox = () => {
+const ShiftDetailsForm = () => {
   const [numberOfForms, setNumberOfForms] = useState("");
   const [initialMoney, setInitialMoney] = useState(0);
   const [inputError, setInputError] = useState("");
@@ -186,7 +186,9 @@ const NumberInputBox = () => {
             </Typography>
             <div style={{ marginBottom: "16px" }}></div>
             <div>
-              <Form onSubmit={(data) => handleFormSubmit(data, index)} />
+              <EmployeeForm
+                onSubmit={(data) => handleFormSubmit(data, index)}
+              />
             </div>
           </div>
         ))}
@@ -284,4 +286,4 @@ const NumberInputBox = () => {
   );
 };
 
-export default NumberInputBox;
+export default ShiftDetailsForm;

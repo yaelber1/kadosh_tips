@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import NumberInputBox from "../src/NumberInputBox";
+import ShiftDetailsForm from "../src/ShiftDetailsForm";
 
-describe("NumberInputBox Component", () => {
+describe("ShiftDetailsForm Component", () => {
   test("renders initial inputs and button", () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     expect(screen.getByLabelText(/הזן סה״כ כסף מזומן/i)).toBeInTheDocument();
     expect(
       screen.getByLabelText(/הזן מספר עובדים במשמרת/i)
@@ -14,14 +14,14 @@ describe("NumberInputBox Component", () => {
   });
 
   test("changes initial money input", () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     fireEvent.change(initialMoneyInput, { target: { value: "1000" } });
     expect(initialMoneyInput.value).toBe("1000");
   });
 
   test("changes number of forms input", () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
     fireEvent.change(numberOfFormsInput, { target: { value: "3" } });
     expect(numberOfFormsInput.value).toBe("3");
@@ -32,7 +32,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("form submission updates the state and calculations are correct for one form", async () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
 
@@ -67,7 +67,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("shows error when the input is invalid", () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
     fireEvent.change(numberOfFormsInput, { target: { value: "-1" } });
     expect(
@@ -76,7 +76,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("displays error if there is more expenditure than initial money", async () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
 
@@ -107,7 +107,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("form submission updates the state and calculations are correct for one form (waiter_tips)", async () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
 
@@ -140,7 +140,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("form submission updates the state and calculations are correct for one form (bar_tips)", async () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
 
@@ -173,7 +173,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("form submission updates the state and calculations are correct for one form (incharge)", async () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
 
@@ -206,7 +206,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("form submission updates the state and calculations are correct for one form (waiter_35)", async () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
 
@@ -237,7 +237,7 @@ describe("NumberInputBox Component", () => {
   });
 
   test("form submission updates the state and calculations are correct for one form (bar_35)", async () => {
-    render(<NumberInputBox />);
+    render(<ShiftDetailsForm />);
     const initialMoneyInput = screen.getByLabelText(/הזן סה״כ כסף מזומן/i);
     const numberOfFormsInput = screen.getByLabelText(/הזן מספר עובדים במשמרת/i);
 

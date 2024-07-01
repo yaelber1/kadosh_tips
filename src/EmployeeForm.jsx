@@ -11,16 +11,18 @@ import {
 } from "@mui/material";
 
 /**
- * Form component handles the input for individual employees.
+ * EmployeeForm component handles the input for individual employees.
  */
-const Form = ({ onSubmit }) => {
+const EmployeeForm = ({ onSubmit }) => {
   const [name, setName] = useState("");
   const [hours, setHours] = useState("");
   const [type, setType] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isHoursValid, setIsHoursValid] = useState("");
   const [formError, setFormError] = useState("");
-  const [isButtonPushed, setButtonPushed] = useState("אל תשכח לשלוח את הטופס");
+  const [isButtonPushed, setButtonPushed] = useState(
+    "אל תשכח/י לשלוח את הטופס"
+  );
 
   const handleChangeSelect = (event) => {
     setType(event.target.value);
@@ -135,4 +137,4 @@ const Form = ({ onSubmit }) => {
   );
 };
 
-export default Form;
+export default EmployeeForm;
